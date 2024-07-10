@@ -48,6 +48,8 @@ const CreateView = (props) => {
   const [notifColor, setNotifColor] = useState("green")
   const [notifMsg, setNotifMsg] = useState("")
 
+  const [formVisible, setFormVisible] = useState(false)
+
   const handleCreateBlog = async (e) => {
     e.preventDefault()
 
@@ -76,27 +78,36 @@ const CreateView = (props) => {
     }, 3000)
   }
 
-  return (
-    <div>
-      {showNotification === true && <Notification color={notifColor} message={notifMsg}></Notification>}
-      <h2>Create new blog</h2>
-      <form onSubmit={handleCreateBlog}>
-        <div>
-          title
-          <input onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
-        </div>
-        <div>
-          author
-          <input onChange={e => setAuthor(e.target.value)} type='text' name='author'></input>
-        </div>
-        <div>
-          url
-          <input onChange={e => setUrl(e.target.value)} type='text' name='url'></input>
-        </div>
-        <button type='submit'>Create</button>
-      </form>
-    </div>
-  )
+  if (!formVisible) {
+    return (
+      <div>
+        <button onClick={() => setFormVisible(true)}>Create new blog</button>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        {showNotification === true && <Notification color={notifColor} message={notifMsg}></Notification>}
+        <h2>Create new blog</h2>
+        <form onSubmit={(e) => {handleCreateBlog(e); setFormVisible(false);}}>
+          <div>
+            title
+            <input onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
+          </div>
+          <div>
+            author
+            <input onChange={e => setAuthor(e.target.value)} type='text' name='author'></input>
+          </div>
+          <div>
+            url
+            <input onChange={e => setUrl(e.target.value)} type='text' name='url'></input>
+          </div>
+          <button type='submit'>Create</button>
+        </form>
+        <button onClick={() => setFormVisible(false)}>Cancel</button>
+      </div>
+    )
+  }
 }
 
 const App = () => {
