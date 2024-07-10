@@ -16,8 +16,9 @@ const BlogView = () => {
 
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+    blogService.getAll().then(blogs => {
+      setBlogs(blogs);
+    }
     )
   }, [])
 
@@ -89,7 +90,7 @@ const CreateView = (props) => {
       <div>
         {showNotification === true && <Notification color={notifColor} message={notifMsg}></Notification>}
         <h2>Create new blog</h2>
-        <form onSubmit={(e) => {handleCreateBlog(e); setFormVisible(false);}}>
+        <form onSubmit={(e) => { handleCreateBlog(e); setFormVisible(false); }}>
           <div>
             title
             <input onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
