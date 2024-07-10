@@ -47,31 +47,36 @@ test('<Blog/> renders expanded content properly', async () => {
 
     const nameTest = screen.queryByText(`name: ${blog.user.name}`)
     expect(nameTest).toBeDefined()
-    
+
 })
 
-
-/*
-test('clicking the button calls event handler once', async () => {
-    const note = {
-      content: 'Component testing is done with react-testing-library',
-      important: true
+test('clicking the like button twice in <Blog/> calls the "likeBlog" function from the props twice', async () => {
+    const blog = {
+        likes: 2,
+        id: '3291dajjdls2',
+        author: 'test author',
+        url: 'testurl.com',
+        title: 'test title!',
+        user: {name: "Test Name"}
     }
-  
+
     const mockHandler = vi.fn()
-  
-    render(
-      <Note note={note} toggleImportance={mockHandler} />
-    )
+
+    render(<Blog likeBlog={mockHandler} showRemove={true} deleteBlog={() => {}}  blog={blog} />)
   
     const user = userEvent.setup()
-    const button = screen.getByText('make not important')
-    await user.click(button)
+
+    const expandButton = screen.getByText('view')
+    await user.click(expandButton)
+    
+    const likeButton = screen.getByText('Like')
+    await user.click(likeButton)
+    await user.click(likeButton)
   
-    expect(mockHandler.mock.calls).toHaveLength(1)
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 
-  test('<NoteForm /> updates parent state and calls onSubmit', async () => {
+  test('<CreateView /> updates parent state and calls onSubmit', async () => {
     const user = userEvent.setup()
     const createNote = vi.fn()
   
@@ -86,5 +91,3 @@ test('clicking the button calls event handler once', async () => {
     expect(createNote.mock.calls).toHaveLength(1)
     expect(createNote.mock.calls[0][0].content).toBe('testing a form...')
   })
-
-  */

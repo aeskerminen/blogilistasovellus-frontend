@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 const Blog = (props) => {
   const [showAll, setShowAll] = useState(false)
 
-
-
   const handleLikeBlog = async () => {
     await props.likeBlog(props.blog.id, props.blog.likes + 1)
   }
