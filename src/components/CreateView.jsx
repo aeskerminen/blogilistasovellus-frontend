@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 import Notification from './Notification'
+import PropTypes from 'prop-types'
 
 const CreateView = (props) => {
 
@@ -20,9 +21,9 @@ const CreateView = (props) => {
     try {
       const curUser = JSON.parse(window.localStorage.getItem('loggedInUser'))
       const newBlog = await blogService.createBlog({ title, author, url })
-      props.addBlog({ 'id': newBlog.id, 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url, 'user': { 'username': curUser.username, 'name': curUser.name } })
+      props.addBlog({ likes: 0, 'id': newBlog.id, 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url, 'user': { 'username': curUser.username, 'name': curUser.name } })
 
-      setNotifMsg(`New blog ${title} made by ${author}`)
+      setNotifMsg(`New blog called ${title} made by ${author}`)
       setNotifColor('green')
       setShowNotification(true)
 
@@ -46,6 +47,7 @@ const CreateView = (props) => {
   if (!formVisible) {
     return (
       <div>
+        {showNotification === true && <Notification color={notifColor} message={notifMsg}></Notification>}
         <button onClick={() => setFormVisible(true)}>Create new blog</button>
       </div>
     )
@@ -73,6 +75,10 @@ const CreateView = (props) => {
       </div>
     )
   }
+}
+
+CreateView.propTypes = {
+  addBlog: PropTypes.func.isRequired
 }
 
 export default CreateView

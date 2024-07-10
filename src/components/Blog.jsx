@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const Blog = (props) => {
   const [showAll, setShowAll] = useState(false)
@@ -34,6 +35,21 @@ const Blog = (props) => {
       }
     </div>
   )
+}
+
+Blog.propTypes = {
+  showRemove: PropTypes.bool.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  blog: PropTypes.shape({
+    likes: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired
+    })
+  })
 }
 
 
