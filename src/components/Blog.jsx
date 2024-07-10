@@ -5,27 +5,22 @@ import PropTypes from 'prop-types'
 const Blog = (props) => {
   const [showAll, setShowAll] = useState(false)
 
-  const [likes, setLikes] = useState(0)
 
-  useEffect(() => {
-    setLikes(props.blog.likes)
-  }, [props.blog.likes])
 
   const handleLikeBlog = async () => {
-    await props.likeBlog(props.blog.id, likes + 1)
-    setLikes(likes + 1)
+    await props.likeBlog(props.blog.id, props.blog.likes + 1)
   }
 
   return (
     <div style={{ border: '2px solid black', margin: '0.25rem', padding: '0.5rem' }}>
       <p style={{ display: 'inline' }}>{ props.blog.title }</p>
-      <p style={{display: 'inline'}}> { props.blog.author }</p>
+      <p style={{display: 'inline' }}> { props.blog.author }</p>
       <button onClick={() => setShowAll(!showAll)}>{showAll ? 'hide' : 'view'}</button>
       {showAll &&
         <div>
           <p>url: {props.blog.url}</p>
           <div>
-            <p style={{ display: 'inline' }}>likes: {likes}</p>
+            <p style={{ display: 'inline' }}>likes: {props.blog.likes}</p>
             <button onClick={() => handleLikeBlog()}>Like</button>
           </div>
           <p>name: {props.blog.user.name}</p>
