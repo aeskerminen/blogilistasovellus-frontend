@@ -47,6 +47,7 @@ test('<Blog/> renders expanded content properly', async () => {
 
     const nameTest = screen.queryByText(`name: ${blog.user.name}`)
     expect(nameTest).toBeDefined()
+    
 })
 
 
