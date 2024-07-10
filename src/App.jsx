@@ -5,7 +5,7 @@ import loginService from './services/login'
 
 const Notification = (props) => {
   return (
-    <div style={{ margin: '0.5rem', padding: "0.25rem", borderRadius: '0.25rem', border: "2px solid black", backgroundColor: props.color }}>
+    <div style={{ margin: '0.5rem', padding: '0.25rem', borderRadius: '0.25rem', border: '2px solid black', backgroundColor: props.color }}>
       <h2 style={{ padding: 0, margin: 0 }}>{props.message}</h2>
     </div>
   )
@@ -18,8 +18,8 @@ const BlogView = () => {
   useEffect(() => {
     blogService.getAll().then(blogs => {
       // It only sorts blogs when page is reloaded. It was not said that the sorting should also happen when I locally like a blog.
-      blogs.sort((a,b) => a.likes < b.likes)
-      setBlogs(blogs);
+      blogs.sort((a, b) => a.likes < b.likes)
+      setBlogs(blogs)
     }
     )
   }, [])
@@ -33,13 +33,13 @@ const BlogView = () => {
 
     let temp = [...blogs]
     temp = temp.filter(b => b.id !== id)
-    
+
     setBlogs(temp)
   }
 
   return (
     <div>
-      <CreateView  addBlog={handleAddBlog}></CreateView>
+      <CreateView addBlog={handleAddBlog}></CreateView>
       <h2>blogs</h2>
       {blogs.map((blog, i) =>
         <Blog showRemove={blog.user.username === currentUser} deleteBlog={handleDeleteBlog} key={blog.id || i} blog={blog} />
@@ -51,13 +51,13 @@ const BlogView = () => {
 
 const CreateView = (props) => {
 
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   const [showNotification, setShowNotification] = useState(false)
-  const [notifColor, setNotifColor] = useState("green")
-  const [notifMsg, setNotifMsg] = useState("")
+  const [notifColor, setNotifColor] = useState('green')
+  const [notifMsg, setNotifMsg] = useState('')
 
   const [formVisible, setFormVisible] = useState(false)
 
@@ -67,25 +67,25 @@ const CreateView = (props) => {
     try {
       const curUser = JSON.parse(window.localStorage.getItem('loggedInUser'))
       const newBlog = await blogService.createBlog({ title, author, url })
-      props.addBlog({ 'id':newBlog.id, 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url, 'user': {'username': curUser.username, 'name': curUser.name}})
+      props.addBlog({ 'id': newBlog.id, 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url, 'user': { 'username': curUser.username, 'name': curUser.name } })
 
       setNotifMsg(`New blog ${title} made by ${author}`)
-      setNotifColor("green")
+      setNotifColor('green')
       setShowNotification(true)
 
-      setTitle("")
-      setAuthor("")
-      setUrl("")
+      setTitle('')
+      setAuthor('')
+      setUrl('')
 
     } catch (e) {
       console.log(e)
-      setNotifMsg("Error creating a new blog...")
-      setNotifColor("red")
+      setNotifMsg('Error creating a new blog...')
+      setNotifColor('red')
       setShowNotification(true)
     }
 
     setTimeout(() => {
-      setNotifMsg("")
+      setNotifMsg('')
       setShowNotification(false)
     }, 3000)
   }
@@ -101,7 +101,7 @@ const CreateView = (props) => {
       <div>
         {showNotification === true && <Notification color={notifColor} message={notifMsg}></Notification>}
         <h2>Create new blog</h2>
-        <form onSubmit={(e) => { handleCreateBlog(e); setFormVisible(false); }}>
+        <form onSubmit={(e) => { handleCreateBlog(e); setFormVisible(false) }}>
           <div>
             title
             <input onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
@@ -128,8 +128,8 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   const [showNotification, setShowNotification] = useState(false)
-  const [notifColor, setNotifColor] = useState("green")
-  const [notifMsg, setNotifMsg] = useState("")
+  const [notifColor, setNotifColor] = useState('green')
+  const [notifMsg, setNotifMsg] = useState('')
 
   useEffect(() => {
     const loadUser = window.localStorage.getItem('loggedInUser')
@@ -159,20 +159,20 @@ const App = () => {
       setUsername('')
       setPassword('')
 
-      setNotifMsg("Succesfully logged in!")
-      setNotifColor("green")
+      setNotifMsg('Succesfully logged in!')
+      setNotifColor('green')
       setShowNotification(true)
 
       console.log(user)
     }
     catch (e) {
-      setNotifMsg("Login failed...")
-      setNotifColor("red")
+      setNotifMsg('Login failed...')
+      setNotifColor('red')
       setShowNotification(true)
     }
 
     setTimeout(() => {
-      setNotifMsg("")
+      setNotifMsg('')
       setShowNotification(false)
     }, 3000)
   }
@@ -185,13 +185,13 @@ const App = () => {
         <form onSubmit={handleLogin}>
           <div>
             username
-            <input type="text" value={username} name="Username" onChange={({ target }) => setUsername(target.value)} />
+            <input type='text' value={username} name='Username' onChange={({ target }) => setUsername(target.value)} />
           </div>
           <div>
             password
-            <input type="password" value={password} name="Password" onChange={({ target }) => setPassword(target.value)} />
+            <input type='password' value={password} name='Password' onChange={({ target }) => setPassword(target.value)} />
           </div>
-          <button type="submit">login</button>
+          <button type='submit'>login</button>
         </form>
       </div>
     )
