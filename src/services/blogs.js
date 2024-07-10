@@ -12,10 +12,16 @@ const getAll = () => {
 const createBlog = async (blog) => {
   const config = {headers: { Authorization: token }}
 
-  console.log("dablog", blog)
-
   const response = await axios.post(baseUrl, blog, config)  
   return response.data
 }
 
-export default { getAll, createBlog, setToken }
+// No need to send whole blog over due to the way I coded the back end.
+const likeBlog = async (id, likes) => {
+  const config = {headers: { Authorization: token }}
+
+  const response = await axios.put(`${baseUrl}/${id}/update`, {'likes': likes}, config)  
+  return response.data
+}
+
+export default { getAll, createBlog, likeBlog, setToken }
