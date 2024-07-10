@@ -28,14 +28,31 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  useEffect(() => {
+    const user = window.localStorage.getItem('loggedInUser')
+    if(user) {
+      setUser(JSON.parse(user))
+    }
+  }, [])
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedInUser')
+    setUser(null)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
     try {
       const user = await loginService.login({ username, password })
+
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
+
       setUser(user)
       setUsername('')
       setPassword('')
+
+      console.log(user)
     }
     catch (exception) {
 
@@ -63,7 +80,7 @@ const App = () => {
 
   return (
     <div>
-      <p>{user.name} logged in!</p>
+      <p>{user.name} logged in!</p><button onClick={handleLogout}>Logout...</button>
       <BlogView></BlogView>
     </div>
   )
