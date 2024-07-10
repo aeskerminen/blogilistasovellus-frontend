@@ -14,9 +14,10 @@ const Notification = (props) => {
 const BlogView = () => {
   const [blogs, setBlogs] = useState([])
 
-
   useEffect(() => {
     blogService.getAll().then(blogs => {
+      // It only sorts blogs when page is reloaded. It was not said that the sorting should also happen when I locally like a blog.
+      blogs.sort((a,b) => a.likes < b.likes)
       setBlogs(blogs);
     }
     )
@@ -24,12 +25,11 @@ const BlogView = () => {
 
   const handleAddBlog = (blog) => {
     setBlogs([...blogs, blog])
-    console.log("SETED!")
   }
 
   return (
     <div>
-      <CreateView addBlog={handleAddBlog}></CreateView>
+      <CreateView  addBlog={handleAddBlog}></CreateView>
       <h2>blogs</h2>
       {blogs.map((blog, i) =>
         <Blog key={blog.id || i} blog={blog} />
