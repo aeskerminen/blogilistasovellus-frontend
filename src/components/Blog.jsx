@@ -12,7 +12,7 @@ const Blog = (props) => {
   return (
     <div style={{ border: '2px solid black', margin: '0.25rem', padding: '0.5rem' }}>
       <p style={{ display: 'inline' }}>{ props.blog.title }</p>
-      <p style={{display: 'inline' }}> { props.blog.author }</p>
+      <p style={{ display: 'inline' }}> { props.blog.author }</p>
       <button onClick={() => setShowAll(!showAll)}>{showAll ? 'hide' : 'view'}</button>
       {showAll &&
         <div>
