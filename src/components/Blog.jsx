@@ -12,7 +12,7 @@ const Blog = (props) => {
   }, [props.blog.likes])
 
   const handleLikeBlog = async () => {
-    await blogService.likeBlog(props.blog.id, likes + 1)
+    await props.likeBlog(props.blog.id, likes + 1)
     setLikes(likes + 1)
   }
 
@@ -41,6 +41,7 @@ const Blog = (props) => {
 Blog.propTypes = {
   showRemove: PropTypes.bool.isRequired,
   deleteBlog: PropTypes.func.isRequired,
+  likeBlog: PropTypes.func.isRequired,
   blog: PropTypes.shape({
     likes: PropTypes.number.isRequired,
     id: PropTypes.string.isRequired,
