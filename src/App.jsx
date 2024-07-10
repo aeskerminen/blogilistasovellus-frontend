@@ -3,8 +3,17 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+const Notification = (props) => {
+  return (
+    <div style={{ margin: '0.5rem', padding: "0.25rem", borderRadius: '0.25rem', border: "2px solid black", backgroundColor: props.color }}>
+      <h2 style={{ padding: 0, margin: 0 }}>{props.message}</h2>
+    </div>
+  )
+}
+
 const BlogView = () => {
   const [blogs, setBlogs] = useState([])
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -21,8 +30,8 @@ const BlogView = () => {
     <div>
       <CreateView addBlog={handleAddBlog}></CreateView>
       <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+      {blogs.map((blog, i) =>
+        <Blog key={blog.id || i} blog={blog} />
       )}
 
     </div>
@@ -35,24 +44,41 @@ const CreateView = (props) => {
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
 
+  const [showNotification, setShowNotification] = useState(false)
+  const [notifColor, setNotifColor] = useState("green")
+  const [notifMsg, setNotifMsg] = useState("")
+
   const handleCreateBlog = async (e) => {
     e.preventDefault()
 
     try {
-      const newBlog = await blogService.createBlog({title, author, url})
-      props.addBlog({'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url})
+      const newBlog = await blogService.createBlog({ title, author, url })
+      props.addBlog({ 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url })
+
+      setNotifMsg(`New blog ${title} made by ${author}`)
+      setNotifColor("green")
+      setShowNotification(true)
 
       setTitle("")
       setAuthor("")
       setUrl("")
-    } catch(e) {
 
+    } catch (e) {
+      console.log(e)
+      setNotifMsg("Error creating a new blog...")
+      setNotifColor("red")
+      setShowNotification(true)
     }
 
+    setTimeout(() => {
+      setNotifMsg("")
+      setShowNotification(false)
+    }, 3000)
   }
 
   return (
     <div>
+      {showNotification === true && <Notification color={notifColor} message={notifMsg}></Notification>}
       <h2>Create new blog</h2>
       <form onSubmit={handleCreateBlog}>
         <div>
@@ -77,6 +103,10 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  const [showNotification, setShowNotification] = useState(false)
+  const [notifColor, setNotifColor] = useState("green")
+  const [notifMsg, setNotifMsg] = useState("")
 
   useEffect(() => {
     const loadUser = window.localStorage.getItem('loggedInUser')
@@ -106,16 +136,28 @@ const App = () => {
       setUsername('')
       setPassword('')
 
+      setNotifMsg("Succesfully logged in!")
+      setNotifColor("green")
+      setShowNotification(true)
+
       console.log(user)
     }
     catch (e) {
-
+      setNotifMsg("Login failed...")
+      setNotifColor("red")
+      setShowNotification(true)
     }
+
+    setTimeout(() => {
+      setNotifMsg("")
+      setShowNotification(false)
+    }, 3000)
   }
 
   if (user === null) {
     return (
       <div>
+        {showNotification === true && <Notification color={notifColor} message={notifMsg}></Notification>}
         <h2>Login to app</h2>
         <form onSubmit={handleLogin}>
           <div>
@@ -134,6 +176,7 @@ const App = () => {
 
   return (
     <div>
+      {showNotification === true && <Notification color={notifColor} message={notifMsg}></Notification>}
       <p>{user.name} logged in!</p><button onClick={handleLogout}>Logout...</button>
       <BlogView></BlogView>
     </div>
