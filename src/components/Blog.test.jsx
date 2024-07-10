@@ -23,6 +23,33 @@ test('<Blog/> renders content properly', () => {
     expect(urlTest).toBeNull()
 })
 
+test('<Blog/> renders expanded content properly', async () => {
+    const blog = {
+        likes: 2,
+        id: '3291dajjdls2',
+        author: 'test author',
+        url: 'testurl.com',
+        title: 'test title!',
+        user: {name: "Test Name"}
+    }
+
+    render(<Blog showRemove={true} deleteBlog={() => {}}  blog={blog} />)
+
+    const user = userEvent.setup()
+    const expandButton = screen.getByText('view')
+    await user.click(expandButton)
+
+    const urlTest = screen.queryByText(`url: ${blog.url}`)
+    expect(urlTest).toBeDefined()
+
+    const likesTest = screen.queryByText(`likes: ${blog.likes}`)
+    expect(likesTest).toBeDefined()
+
+    const nameTest = screen.queryByText(`name: ${blog.user.name}`)
+    expect(nameTest).toBeDefined()
+})
+
+
 /*
 test('clicking the button calls event handler once', async () => {
     const note = {
