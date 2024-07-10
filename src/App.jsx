@@ -12,13 +12,63 @@ const BlogView = () => {
     )
   }, [])
 
+  const handleAddBlog = (blog) => {
+    setBlogs([...blogs, blog])
+    console.log("SETED!")
+  }
+
   return (
     <div>
+      <CreateView addBlog={handleAddBlog}></CreateView>
       <h2>blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
 
+    </div>
+  )
+}
+
+const CreateView = (props) => {
+
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("")
+  const [url, setUrl] = useState("")
+
+  const handleCreateBlog = async (e) => {
+    e.preventDefault()
+
+    try {
+      const newBlog = await blogService.createBlog({title, author, url})
+      props.addBlog({'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url})
+
+      setTitle("")
+      setAuthor("")
+      setUrl("")
+    } catch(e) {
+
+    }
+
+  }
+
+  return (
+    <div>
+      <h2>Create new blog</h2>
+      <form onSubmit={handleCreateBlog}>
+        <div>
+          title
+          <input onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
+        </div>
+        <div>
+          author
+          <input onChange={e => setAuthor(e.target.value)} type='text' name='author'></input>
+        </div>
+        <div>
+          url
+          <input onChange={e => setUrl(e.target.value)} type='text' name='url'></input>
+        </div>
+        <button type='submit'>Create</button>
+      </form>
     </div>
   )
 }
@@ -29,9 +79,11 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    const user = window.localStorage.getItem('loggedInUser')
-    if(user) {
-      setUser(JSON.parse(user))
+    const loadUser = window.localStorage.getItem('loggedInUser')
+    if (loadUser) {
+      const user = JSON.parse(loadUser)
+      setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -49,12 +101,14 @@ const App = () => {
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
 
       setUser(user)
+      blogService.setToken(user.token)
+
       setUsername('')
       setPassword('')
 
       console.log(user)
     }
-    catch (exception) {
+    catch (e) {
 
     }
   }
