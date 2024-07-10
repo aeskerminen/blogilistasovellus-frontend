@@ -15,7 +15,11 @@ const BlogView = () => {
     )
   }, [])
 
-  const handleAddBlog = (blog) => {
+  const handleAddBlog = async ({ title, author, url }) => {
+    const curUser = JSON.parse(window.localStorage.getItem('loggedInUser'))
+    const newBlog = await blogService.createBlog({ title, author, url })
+
+    const blog = { likes: 0, 'id': newBlog.id, 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url, 'user': { 'username': curUser.username, 'name': curUser.name } }
     setBlogs([...blogs, blog])
   }
 

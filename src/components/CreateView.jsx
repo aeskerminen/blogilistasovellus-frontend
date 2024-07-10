@@ -19,9 +19,7 @@ const CreateView = (props) => {
     e.preventDefault()
 
     try {
-      const curUser = JSON.parse(window.localStorage.getItem('loggedInUser'))
-      const newBlog = await blogService.createBlog({ title, author, url })
-      props.addBlog({ likes: 0, 'id': newBlog.id, 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url, 'user': { 'username': curUser.username, 'name': curUser.name } })
+      props.addBlog({ title, author, url })
 
       setNotifMsg(`New blog called ${title} made by ${author}`)
       setNotifColor('green')
@@ -59,15 +57,15 @@ const CreateView = (props) => {
         <form onSubmit={(e) => { handleCreateBlog(e); setFormVisible(false) }}>
           <div>
               title
-            <input onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
+            <input id='titleInput' onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
           </div>
           <div>
               author
-            <input onChange={e => setAuthor(e.target.value)} type='text' name='author'></input>
+            <input id='authorInput' onChange={e => setAuthor(e.target.value)} type='text' name='author'></input>
           </div>
           <div>
               url
-            <input onChange={e => setUrl(e.target.value)} type='text' name='url'></input>
+            <input id='urlInput' onChange={e => setUrl(e.target.value)} type='text' name='url'></input>
           </div>
           <button type='submit'>Create</button>
         </form>
