@@ -16,12 +16,19 @@ const createBlog = async (blog) => {
   return response.data
 }
 
+const deleteBlog = async (id) => {
+  const config = {headers: { Authorization: token }}
+
+  const response = await axios.delete(`${baseUrl}/${id}`, config)  
+  return response.data
+}
+
 // No need to send whole blog over due to the way I coded the back end.
 const likeBlog = async (id, likes) => {
   const config = {headers: { Authorization: token }}
 
-  const response = await axios.put(`${baseUrl}/${id}/update`, {'likes': likes}, config)  
+  const response = await axios.put(`${baseUrl}/${id}`, {'likes': likes}, config)  
   return response.data
 }
 
-export default { getAll, createBlog, likeBlog, setToken }
+export default { getAll, createBlog, deleteBlog, likeBlog, setToken }

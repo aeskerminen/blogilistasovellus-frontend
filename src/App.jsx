@@ -13,6 +13,7 @@ const Notification = (props) => {
 
 const BlogView = () => {
   const [blogs, setBlogs] = useState([])
+  const currentUser = JSON.parse(window.localStorage.getItem('loggedInUser')).username
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -27,12 +28,21 @@ const BlogView = () => {
     setBlogs([...blogs, blog])
   }
 
+  const handleDeleteBlog = async (id) => {
+    await blogService.deleteBlog(id)
+
+    let temp = [...blogs]
+    temp = temp.filter(b => b.id !== id)
+    
+    setBlogs(temp)
+  }
+
   return (
     <div>
       <CreateView  addBlog={handleAddBlog}></CreateView>
       <h2>blogs</h2>
       {blogs.map((blog, i) =>
-        <Blog key={blog.id || i} blog={blog} />
+        <Blog showRemove={blog.user.username === currentUser} deleteBlog={handleDeleteBlog} key={blog.id || i} blog={blog} />
       )}
 
     </div>
@@ -55,8 +65,9 @@ const CreateView = (props) => {
     e.preventDefault()
 
     try {
+      const curUser = JSON.parse(window.localStorage.getItem('loggedInUser'))
       const newBlog = await blogService.createBlog({ title, author, url })
-      props.addBlog({ 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url })
+      props.addBlog({ 'id':newBlog.id, 'author': newBlog.author, 'title': newBlog.title, 'url': newBlog.url, 'user': {'username': curUser.username, 'name': curUser.name}})
 
       setNotifMsg(`New blog ${title} made by ${author}`)
       setNotifColor("green")

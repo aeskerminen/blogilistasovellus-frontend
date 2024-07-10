@@ -16,7 +16,7 @@ const Blog = (props) => {
   }
 
   return (
-    <div>
+    <div style={{border: '2px solid black', margin: '0.25rem', padding: '0.5rem'}}>
       {props.blog.title} {props.blog.author}
       <button onClick={() => setShowAll(!showAll)}>{showAll ? 'hide' : 'view'}</button>
       {showAll &&
@@ -28,6 +28,9 @@ const Blog = (props) => {
           </div>
           <p>name: {props.blog.user.name}</p>
         </div>
+      }
+      {showAll && props.showRemove &&
+        <button onClick={async () => {await props.deleteBlog(props.blog.id);}}>remove</button>
       }
     </div>
   )
