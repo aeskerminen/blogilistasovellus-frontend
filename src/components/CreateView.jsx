@@ -57,15 +57,15 @@ const CreateView = (props) => {
         <form onSubmit={(e) => { handleCreateBlog(e); setFormVisible(false) }}>
           <div>
               title
-            <input id='titleInput' onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
+            <input data-testid='titleInput' id='titleInput' onChange={e => setTitle(e.target.value)} type='text' name='title'></input>
           </div>
           <div>
               author
-            <input id='authorInput' onChange={e => setAuthor(e.target.value)} type='text' name='author'></input>
+            <input data-testid='authorInput' id='authorInput' onChange={e => setAuthor(e.target.value)} type='text' name='author'></input>
           </div>
           <div>
               url
-            <input id='urlInput' onChange={e => setUrl(e.target.value)} type='text' name='url'></input>
+            <input data-testid='urlInput' id='urlInput' onChange={e => setUrl(e.target.value)} type='text' name='url'></input>
           </div>
           <button type='submit'>Create</button>
         </form>
