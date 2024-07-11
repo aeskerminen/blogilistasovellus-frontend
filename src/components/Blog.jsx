@@ -18,7 +18,7 @@ const Blog = (props) => {
         <div>
           <p>url: {props.blog.url}</p>
           <div>
-            <p style={{ display: 'inline' }}>likes: {props.blog.likes}</p>
+            <p data-testid='likeParagraph' style={{ display: 'inline' }}>likes: {props.blog.likes}</p>
             <button onClick={() => handleLikeBlog()}>Like</button>
           </div>
           <p>name: {props.blog.user.name}</p>

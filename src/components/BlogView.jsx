@@ -36,7 +36,7 @@ const BlogView = () => {
     await blogService.likeBlog(id, likes)
     let temp = [...blogs]
     temp[temp.findIndex(b => b.id === id)].likes = likes
-    temp = temp.sort((a,b) => a.likes < b.likes)
+    temp = temp.sort((a, b) => a.likes < b.likes)
     setBlogs(temp)
   }
 
@@ -44,10 +44,11 @@ const BlogView = () => {
     <div>
       <CreateView addBlog={handleAddBlog}></CreateView>
       <h2>blogs</h2>
-      {blogs.map((blog, i) =>
-        <Blog likeBlog={handleLikeBlog} showRemove={blog.user.username === currentUser} deleteBlog={handleDeleteBlog} key={blog.id || i} blog={blog} />
-      )}
-
+      <div data-testid='blogContainer'>
+        {blogs.map((blog, i) =>
+          <Blog likeBlog={handleLikeBlog} showRemove={blog.user.username === currentUser} deleteBlog={handleDeleteBlog} key={blog.id || i} blog={blog} />
+        )}
+      </div>
     </div>
   )
 }
