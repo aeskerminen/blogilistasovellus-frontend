@@ -7,9 +7,11 @@ const BlogView = () => {
   const [blogs, setBlogs] = useState([])
   const currentUser = JSON.parse(window.localStorage.getItem('loggedInUser')).username
 
+  const blogSorterFunction  = (a,b) => a.likes < b.likes
+
   useEffect(() => {
     blogService.getAll().then(blogs => {
-      blogs.sort((a, b) => a.likes < b.likes)
+      blogs.sort(blogSorterFunction)
       setBlogs(blogs)
     }
     )
@@ -36,7 +38,7 @@ const BlogView = () => {
     await blogService.likeBlog(id, likes)
     let temp = [...blogs]
     temp[temp.findIndex(b => b.id === id)].likes = likes
-    temp = temp.sort((a, b) => a.likes < b.likes)
+    temp = temp.sort(blogSorterFunction)
     setBlogs(temp)
   }
 
